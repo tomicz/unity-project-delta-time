@@ -6,70 +6,86 @@ using UnityEngine.UI;
 public class FrameCounterController : MonoBehaviour
 {
     [Header("Dependencies")]
+    [SerializeField] private Image _frame;
     [SerializeField] private Image _lastFrame;
     [SerializeField] private Image _currentFrame;
     [SerializeField] private Image _deltaTime;
 
+    [Header("Transforms")]
+    [SerializeField] private Transform _frameContainer;
+    [SerializeField] private Transform _startPosition;
+    [SerializeField] private Transform _endPosition;
+
     [Header("Properties")]
     [SerializeField] private int _frameCount = 60;
-    [SerializeField] private float _frameOffset = 80f;
-    [SerializeField] private float _frameDelay = 1f;
 
-    [SerializeField] private GameObject[] _framesArray;
+    private Transform[] _framesArray;
+    private int _frameIndex = 0;
 
-    private int _frameCounter = 1;
+    private void Awake()
+    {
+        CreateFrames();
+    }
 
     public void StartEvent()
     {
-        InitiliseFrames();
-        StartCoroutine(StartFrameCounting());
+        //InitiliseFrames();
+        //StartCoroutine(StartFrameCounting());
     }
 
     public void StopEvent()
     {
-        StopAllCoroutines();
-        InitiliseFrames();
+        //StopAllCoroutines();
+        //InitiliseFrames();
     }
 
-    private void InitiliseFrames()
+    private void Update()
     {
-        _frameCounter = 1;
-        _lastFrame.transform.position = _framesArray[0].transform.position;
-        _currentFrame.transform.position = _framesArray[0].transform.position;
-
-        _deltaTime.GetComponentInChildren<TMP_Text>().text = 0.ToString();
-        _deltaTime.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
-        _deltaTime.transform.position = new Vector2(_currentFrame.transform.position.x, _framesArray[0].transform.position.y);
+        TrackLastAndCurrentFrame();
     }
 
-    private IEnumerator StartFrameCounting()
+    private void CreateFrames()
     {
-        while(_frameCounter < _frameCount)
+        Application.targetFrameRate = _frameCount;
+
+        _framesArray = new Transform[_frameCount];
+
+        float fixedOffset = (_startPosition.position.x + _endPosition.position.x) / _frameCount;
+        float variableOffset = _startPosition.position.x;
+
+        for (int i = 0; i < _frameCount; i++)
         {
-            yield return new WaitForSeconds(_frameDelay);
+            variableOffset += fixedOffset;
+            Vector3 position = new Vector3(variableOffset, _startPosition.transform.position.y, _startPosition.transform.position.z);
+            Image frame = Instantiate(_frame, _frameContainer);
 
-            UpdateFrame();
-            _frameCounter++;
+            frame.transform.position = position;
+
+            _framesArray[i] = frame.transform;
+        }
+    }
+
+    private void TrackLastAndCurrentFrame()
+    {
+        _frameIndex++;
+
+        if(_frameIndex >= _frameCount - 1)
+        {
+            _frameIndex = 0;
         }
 
-        yield return new WaitForSeconds(_frameDelay);
+        _lastFrame.transform.position = _framesArray[_frameIndex].position;
+        _currentFrame.transform.position = _framesArray[_frameIndex + 1].position;
 
-        InitiliseFrames();
+        UpdateDeltaTime((_currentFrame.transform.position.x - _lastFrame.transform.position.x));
     }
 
-    private void UpdateFrame()
+    private void UpdateDeltaTime(float frameOffset)
     {
-        _lastFrame.transform.position = _framesArray[_frameCounter - 1].transform.position;
-        _currentFrame.transform.position = _framesArray[_frameCounter].transform.position;
-        SetDeltaTime();
-    }
-
-    private void SetDeltaTime()
-    {
-        Vector2 size = new Vector2(_frameOffset, 10);
+        Vector2 size = new Vector2(frameOffset, 10);
 
         _deltaTime.GetComponent<RectTransform>().sizeDelta = size;
         _deltaTime.transform.position = new Vector2((_currentFrame.transform.position.x + _lastFrame.transform.position.x) / 2, _framesArray[0].transform.position.y);
-        _deltaTime.GetComponentInChildren<TMP_Text>().text = Random.Range(0.01f, 0.03f).ToString("F4");
+        _deltaTime.GetComponentInChildren<TMP_Text>().text = Time.deltaTime.ToString("F4");
     }
 }
