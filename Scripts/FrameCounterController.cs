@@ -30,7 +30,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _moveSpeedText;
     [SerializeField] private TMP_Text _distanceCrossedText;
 
-    private Transform[] _framesArray;
+    [SerializeField] private Transform[] _framesArray;
     private int _frameIndex = 0;
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
@@ -56,7 +56,10 @@ public class FrameCounterController : MonoBehaviour
 
     public void SetTargetFramerate()
     {
-        Application.targetFrameRate = int.Parse(_targetFPSInputField.text);
+        _frameCount = int.Parse(_targetFPSInputField.text);
+        Application.targetFrameRate = _frameCount;
+
+        PoolFrames();
     }
 
     public void EnableDeltaTime() => _isDeltaTimeEnabled = true;
@@ -110,13 +113,35 @@ public class FrameCounterController : MonoBehaviour
         _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
     }
 
+    private void PoolFrames()
+    {
+        float fixedOffset = Mathf.Abs(_startPosition.position.x - _endPosition.position.x) / _frameCount;
+        float variableOffset = _startPosition.position.x;
+
+        for (int i = 0; i < _framesArray.Length; i++)
+        {
+            _framesArray[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < _frameCount; i++)
+        {
+            variableOffset += fixedOffset;
+            Vector3 position = new Vector3(variableOffset, _startPosition.transform.position.y, _startPosition.transform.position.z);
+
+            _framesArray[i].position = position;
+            _framesArray[i].gameObject.SetActive(true);
+        }
+
+        ResetPositions();
+    }
+
     private void CreateFrames()
     {
         Application.targetFrameRate = _frameCount;
         
         _framesArray = new Transform[_frameCount];
 
-        float fixedOffset = (Mathf.Abs(_startPosition.position.x - _endPosition.position.x)) / _frameCount;
+        float fixedOffset = Mathf.Abs(_startPosition.position.x - _endPosition.position.x) / _frameCount;
         float variableOffset = _startPosition.position.x;
 
         for (int i = 0; i < _frameCount; i++)

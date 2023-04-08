@@ -1764,7 +1764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frameCount: 60
-  _moveSpeed: 10
+  _moveSpeed: 1
   _frame: {fileID: 1941928318809108329, guid: 0ccf6fb3438f64a30ac872a0995c75c6, type: 3}
   _lastFrame: {fileID: 5607501634129106803}
   _currentFrame: {fileID: 866074540}
@@ -1781,6 +1781,7 @@ MonoBehaviour:
   _lastFrameText: {fileID: 1522635769}
   _moveSpeedText: {fileID: 258661640}
   _distanceCrossedText: {fileID: 1731498426}
+  _framesArray: []
 --- !u!4 &624792564
 Transform:
   m_ObjectHideFlags: 0
