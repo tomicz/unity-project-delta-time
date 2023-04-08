@@ -15,6 +15,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private Image _deltaTime;
     [SerializeField] private Image _car;
     [SerializeField] private Toggle _isDeltaTimeEnabledToggle;
+    [SerializeField] private TMP_InputField _targetFPSInputField;
 
     [Header("Transforms")]
     [SerializeField] private Transform _frameContainer;
@@ -51,6 +52,11 @@ public class FrameCounterController : MonoBehaviour
         _frameIndex = 0;
         _isEventStarted = false;
         ResetPositions();
+    }
+
+    public void SetTargetFramerate()
+    {
+        Application.targetFrameRate = int.Parse(_targetFPSInputField.text);
     }
 
     public void EnableDeltaTime() => _isDeltaTimeEnabled = true;
