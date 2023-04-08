@@ -48,6 +48,7 @@ public class FrameCounterController : MonoBehaviour
 
     public void StopEvent()
     {
+        _frameIndex = 0;
         _isEventStarted = false;
         ResetPositions();
     }
@@ -109,7 +110,7 @@ public class FrameCounterController : MonoBehaviour
         
         _framesArray = new Transform[_frameCount];
 
-        float fixedOffset = (_startPosition.position.x + _endPosition.position.x) / _frameCount;
+        float fixedOffset = (Mathf.Abs(_startPosition.position.x - _endPosition.position.x)) / _frameCount;
         float variableOffset = _startPosition.position.x;
 
         for (int i = 0; i < _frameCount; i++)
