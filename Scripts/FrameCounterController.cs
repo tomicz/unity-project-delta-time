@@ -31,11 +31,13 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _lastFrameText;
     [SerializeField] private TMP_Text _moveSpeedText;
     [SerializeField] private TMP_Text _distanceCrossedText;
+    [SerializeField] private TMP_Text _timeElapsedText;
 
     private Transform[] _framesArray;
     private int _frameIndex = 0;
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
+    private float _timeElapsed = 0;
 
     private void Awake()
     {
@@ -81,6 +83,9 @@ public class FrameCounterController : MonoBehaviour
         PushMovingEntityForward();
 
         _fpsStatsText.text = "FPS: " + (1 / Time.deltaTime).ToString("F1");
+
+        _timeElapsed += Time.deltaTime;
+        _timeElapsedText.text = $"Time elapsed: {_timeElapsed.ToString("F0")}s";
     }
 
     private void InitiliseMovingEntity()
@@ -198,5 +203,6 @@ public class FrameCounterController : MonoBehaviour
         UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
 
         _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + _carOffsetY);
+        _timeElapsed = 0;
     }
 }
