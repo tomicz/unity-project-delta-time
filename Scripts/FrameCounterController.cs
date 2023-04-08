@@ -7,6 +7,7 @@ public class FrameCounterController : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private int _frameCount = 60;
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _carOffsetY = 60f;
 
     [Header("Dependencies")]
     [SerializeField] private Image _frame;
@@ -31,7 +32,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _moveSpeedText;
     [SerializeField] private TMP_Text _distanceCrossedText;
 
-    [SerializeField] private Transform[] _framesArray;
+    private Transform[] _framesArray;
     private int _frameIndex = 0;
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
@@ -84,7 +85,7 @@ public class FrameCounterController : MonoBehaviour
 
     private void InitiliseMovingEntity()
     {
-        _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + 60f);
+        _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + _carOffsetY);
     }
 
     private void PushMovingEntityForward()
@@ -196,6 +197,6 @@ public class FrameCounterController : MonoBehaviour
 
         UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
 
-        _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + 60f);
+        _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + _carOffsetY);
     }
 }
