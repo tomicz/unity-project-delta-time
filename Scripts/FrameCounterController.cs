@@ -21,6 +21,14 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private Transform _startPosition;
     [SerializeField] private Transform _endPosition;
 
+    [Header("Stats UI")]
+    [SerializeField] private TMP_Text _fpsStatsText;
+    [SerializeField] private TMP_Text _deltaTimeText;
+    [SerializeField] private TMP_Text _currentFrameText;
+    [SerializeField] private TMP_Text _lastFrameText;
+    [SerializeField] private TMP_Text _moveSpeedText;
+    [SerializeField] private TMP_Text _distanceCrossedText;
+
     private Transform[] _framesArray;
     private int _frameIndex = 0;
     private bool _isEventStarted = false;
@@ -54,6 +62,8 @@ public class FrameCounterController : MonoBehaviour
 
         TrackLastAndCurrentFrame();
         PushMovingEntityForward();
+
+        _fpsStatsText.text = "FPS: " + (1 / Time.deltaTime).ToString("F1");
     }
 
     private void InitiliseMovingEntity()
@@ -66,11 +76,17 @@ public class FrameCounterController : MonoBehaviour
         if (_isDeltaTimeEnabled)
         {
             _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
+
+            _moveSpeedText.text = $"Move speed: {_moveSpeed}/s";
         }
         else
         {
-            _car.transform.position += Vector3.right * _moveSpeed;
+            _car.transform.position += Vector3.right * _moveSpeed; ;
+
+            _moveSpeedText.text = $"Move speed: {_moveSpeed}/f";
         }
+
+        _distanceCrossedText.text = $"Distance crossed: {(_framesArray[0].position.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void ToggleDeltaTime()
@@ -83,12 +99,14 @@ public class FrameCounterController : MonoBehaviour
         {
             _isDeltaTimeEnabled = false;
         }
+
+        _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
     }
 
     private void CreateFrames()
     {
         Application.targetFrameRate = _frameCount;
-
+        
         _framesArray = new Transform[_frameCount];
 
         float fixedOffset = (_startPosition.position.x + _endPosition.position.x) / _frameCount;
@@ -119,6 +137,9 @@ public class FrameCounterController : MonoBehaviour
         _currentFrame.transform.position = _framesArray[_frameIndex + 1].position;
 
         UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
+
+        _lastFrameText.text = $"Last frame: {_frameIndex}";
+        _currentFrameText.text = $"Current frame: {_frameIndex + 1}";
     }
 
     private void UpdateDeltaTime(float frameOffset)
