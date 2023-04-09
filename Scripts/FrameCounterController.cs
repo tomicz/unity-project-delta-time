@@ -42,6 +42,7 @@ public class FrameCounterController : MonoBehaviour
     private void Awake()
     {
         CreateFrames();
+        EnableDeltaTimeObjects(false);
     }
 
     private void OnEnable()
@@ -51,6 +52,7 @@ public class FrameCounterController : MonoBehaviour
 
     public void StartEvent()
     {
+        EnableDeltaTimeObjects(true);
         _isEventStarted = true;
         ToggleDeltaTime();
     }
@@ -60,6 +62,7 @@ public class FrameCounterController : MonoBehaviour
         _frameIndex = 0;
         _isEventStarted = false;
         ResetPositions();
+        EnableDeltaTimeObjects(false);
     }
 
     public void SetTargetFramerate()
@@ -95,6 +98,13 @@ public class FrameCounterController : MonoBehaviour
         {
             _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
         }
+    }
+
+    private void EnableDeltaTimeObjects(bool isEnabled)
+    {
+        _lastFrame.gameObject.SetActive(isEnabled);
+        _currentFrame.gameObject.SetActive(isEnabled);
+        _deltaTime.gameObject.SetActive(isEnabled);
     }
 
     private void PushMovingEntityForward()
