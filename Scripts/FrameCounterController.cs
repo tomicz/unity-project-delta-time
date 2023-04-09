@@ -122,7 +122,7 @@ public class FrameCounterController : MonoBehaviour
             _moveSpeedText.text = $"Move speed: {_moveSpeed}/f";
         }
 
-        _distanceCrossedText.text = $"Distance crossed: {(_framesArray[0].position.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void ToggleDeltaTime()
