@@ -30,6 +30,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _moveSpeedText;
     [SerializeField] private TMP_Text _distanceCrossedText;
     [SerializeField] private TMP_Text _timeElapsedText;
+    [SerializeField] private TMP_Text _currentDeltaTimeText;
 
     private Transform[] _framesArray;
     private int _frameIndex = 0;
@@ -84,6 +85,11 @@ public class FrameCounterController : MonoBehaviour
 
         _timeElapsed += Time.deltaTime;
         _timeElapsedText.text = $"Time elapsed: {_timeElapsed.ToString("F0")}s";
+
+        if (_isDeltaTimeEnabled)
+        {
+            _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
+        }
     }
 
     private void InitiliseMovingEntity()
