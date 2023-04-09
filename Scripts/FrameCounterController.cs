@@ -21,8 +21,6 @@ public class FrameCounterController : MonoBehaviour
 
     [Header("Transforms")]
     [SerializeField] private Transform _frameContainer;
-    [SerializeField] private Transform _startPosition;
-    [SerializeField] private Transform _endPosition;
 
     [Header("Stats UI")]
     [SerializeField] private TMP_Text _fpsStatsText;
@@ -127,9 +125,6 @@ public class FrameCounterController : MonoBehaviour
 
     private void PoolFrames()
     {
-        float fixedOffset = Mathf.Abs(_startPosition.position.x - _endPosition.position.x) / _frameCount;
-        float variableOffset = _startPosition.position.x;
-
         for (int i = 0; i < _framesArray.Length; i++)
         {
             _framesArray[i].gameObject.SetActive(false);
@@ -137,10 +132,6 @@ public class FrameCounterController : MonoBehaviour
 
         for (int i = 0; i < _frameCount; i++)
         {
-            variableOffset += fixedOffset;
-            Vector3 position = new Vector3(variableOffset, _startPosition.transform.position.y, _startPosition.transform.position.z);
-
-            _framesArray[i].position = position;
             _framesArray[i].gameObject.SetActive(true);
         }
 
@@ -153,17 +144,9 @@ public class FrameCounterController : MonoBehaviour
         
         _framesArray = new Transform[_frameCount];
 
-        float fixedOffset = Mathf.Abs(_startPosition.position.x - _endPosition.position.x) / _frameCount;
-        float variableOffset = _startPosition.position.x;
-
         for (int i = 0; i < _frameCount; i++)
         {
-            variableOffset += fixedOffset;
-            Vector3 position = new Vector3(variableOffset, _startPosition.transform.position.y, _startPosition.transform.position.z);
             Image frame = Instantiate(_frame, _frameContainer);
-
-            frame.transform.position = position;
-
             _framesArray[i] = frame.transform;
         }
     }
