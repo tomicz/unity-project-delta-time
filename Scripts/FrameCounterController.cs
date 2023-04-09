@@ -37,11 +37,16 @@ public class FrameCounterController : MonoBehaviour
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
     private float _timeElapsed = 0;
+    private Vector3 _carStartPosition = Vector3.zero;
 
     private void Awake()
     {
         CreateFrames();
-        InitiliseMovingEntity();
+    }
+
+    private void OnEnable()
+    {
+        _carStartPosition = _car.transform.position;
     }
 
     public void StartEvent()
@@ -90,11 +95,6 @@ public class FrameCounterController : MonoBehaviour
         {
             _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
         }
-    }
-
-    private void InitiliseMovingEntity()
-    {
-        _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + _carOffsetY);
     }
 
     private void PushMovingEntityForward()
@@ -191,7 +191,7 @@ public class FrameCounterController : MonoBehaviour
 
         UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
 
-        _car.transform.position = new Vector2(_framesArray[0].position.x, _framesArray[0].position.y + _carOffsetY);
+        _car.transform.position = _carStartPosition;
         _timeElapsed = 0;
     }
 }
