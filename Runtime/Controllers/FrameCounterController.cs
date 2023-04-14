@@ -1,4 +1,6 @@
+using System;
 using TMPro;
+using TOMICZ.DeltaTimeSimulator.UIViews;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +34,9 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _timeElapsedText;
     [SerializeField] private TMP_Text _currentDeltaTimeText;
 
+    [Header("UIView Dependencies")]
+    [SerializeField] private UIViewTimeContainer _uiViewTimeContainer;
+
     private Transform[] _framesArray;
     private int _frameIndex = 0;
     private bool _isEventStarted = false;
@@ -42,7 +47,13 @@ public class FrameCounterController : MonoBehaviour
     private void Awake()
     {
         //CreateFrames();
+        _uiViewTimeContainer.OnActionCompleted += OnTimeCycleCompletedEventHandler;
         EnableDeltaTimeObjects(false);
+    }
+
+    private void OnTimeCycleCompletedEventHandler()
+    {
+
     }
 
     private void OnEnable()

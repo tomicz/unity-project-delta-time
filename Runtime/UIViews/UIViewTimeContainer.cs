@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +7,8 @@ namespace TOMICZ.DeltaTimeSimulator.UIViews
 {
     public class UIViewTimeContainer : MonoBehaviour
     {
+        public Action OnActionCompleted;
+
         [SerializeField] private Image _currentSecondImage;
         [SerializeField] private Transform _secondsContainer;
 
@@ -31,6 +34,7 @@ namespace TOMICZ.DeltaTimeSimulator.UIViews
 
             if(_currentSecondImage.transform.position.y <= _endPosition.y)
             {
+                OnActionCompleted?.Invoke();
                 _currentSecondImage.transform.position = _startPosition;
             }
         }

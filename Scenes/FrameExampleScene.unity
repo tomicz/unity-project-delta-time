@@ -5004,6 +5004,7 @@ MonoBehaviour:
   _distanceCrossedText: {fileID: 1731498426}
   _timeElapsedText: {fileID: 1264021429}
   _currentDeltaTimeText: {fileID: 1889656818}
+  _uiViewTimeContainer: {fileID: 192881896}
 --- !u!4 &624792564
 Transform:
   m_ObjectHideFlags: 0
