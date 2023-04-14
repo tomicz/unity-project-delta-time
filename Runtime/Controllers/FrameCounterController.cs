@@ -41,7 +41,7 @@ public class FrameCounterController : MonoBehaviour
 
     private void Awake()
     {
-        CreateFrames();
+        //CreateFrames();
         EnableDeltaTimeObjects(false);
     }
 
@@ -179,7 +179,7 @@ public class FrameCounterController : MonoBehaviour
         _lastFrame.transform.position = _framesArray[_frameIndex].position;
         _currentFrame.transform.position = _framesArray[_frameIndex + 1].position;
 
-        UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
+        UpdateDeltaTime(Mathf.Abs(_currentFrame.transform.position.y - _lastFrame.transform.position.y));
 
         _lastFrameText.text = $"Last frame: {_frameIndex}";
         _currentFrameText.text = $"Current frame: {_frameIndex + 1}";
@@ -187,10 +187,10 @@ public class FrameCounterController : MonoBehaviour
 
     private void UpdateDeltaTime(float frameOffset)
     {
-        Vector2 size = new Vector2(frameOffset, 10);
+        Vector2 size = new Vector2(10, frameOffset);
 
         _deltaTime.GetComponent<RectTransform>().sizeDelta = size;
-        _deltaTime.transform.position = new Vector2((_currentFrame.transform.position.x + _lastFrame.transform.position.x) / 2, _framesArray[0].transform.position.y);
+        _deltaTime.transform.position = new Vector2(_framesArray[0].transform.position.x, (_currentFrame.transform.position.y + _lastFrame.transform.position.y) / 2);
         _deltaTime.GetComponentInChildren<TMP_Text>().text = Time.deltaTime.ToString("F4");
     }
 
