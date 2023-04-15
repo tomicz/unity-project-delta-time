@@ -45,6 +45,7 @@ public class FrameCounterController : MonoBehaviour
     private void Awake()
     {
         _uiViewTimeContainer.OnActionCompleted += OnTimeCycleCompletedEventHandler;
+        Application.targetFrameRate = _frameCount;
     }
 
     private void OnTimeCycleCompletedEventHandler()
