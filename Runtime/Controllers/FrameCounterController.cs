@@ -68,9 +68,12 @@ public class FrameCounterController : MonoBehaviour
             _isEventPaused = false;
         }
 
+        ToggleDeltaTime();
+
         ResetStats();
         _uiViewFrameContainer.Show();
         _isEventStarted = true;
+        
     }
 
     public void StopEvent()
