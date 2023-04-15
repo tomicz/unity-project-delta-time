@@ -1,4 +1,5 @@
 using TMPro;
+using TOMICZ.DeltaTimeSimulator.UIViews;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class FrameCounterController : MonoBehaviour
 {
     [Header("Properties")]
     [SerializeField] private int _frameCount = 60;
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private float _carOffsetY = 60f;
 
     [Header("Dependencies")]
@@ -32,8 +33,10 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _timeElapsedText;
     [SerializeField] private TMP_Text _currentDeltaTimeText;
 
-    private Transform[] _framesArray;
-    private int _frameIndex = 0;
+    [Header("UIView Dependencies")]
+    [SerializeField] private UIViewTimeContainer _uiViewTimeContainer;
+    [SerializeField] private UIViewFrameContainer _uiViewFrameContainer;
+
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
     private float _timeElapsed = 0;
@@ -41,8 +44,12 @@ public class FrameCounterController : MonoBehaviour
 
     private void Awake()
     {
-        CreateFrames();
-        EnableDeltaTimeObjects(false);
+        _uiViewTimeContainer.OnActionCompleted += OnTimeCycleCompletedEventHandler;
+    }
+
+    private void OnTimeCycleCompletedEventHandler()
+    {
+        _uiViewFrameContainer.ResetIndex();
     }
 
     private void OnEnable()
@@ -52,17 +59,17 @@ public class FrameCounterController : MonoBehaviour
 
     public void StartEvent()
     {
-        EnableDeltaTimeObjects(true);
+        _uiViewFrameContainer.Show();
         _isEventStarted = true;
         ToggleDeltaTime();
     }
 
     public void StopEvent()
     {
-        _frameIndex = 0;
+        _uiViewFrameContainer.ResetIndex();
         _isEventStarted = false;
-        ResetPositions();
-        EnableDeltaTimeObjects(false);
+        _uiViewFrameContainer.Hide();
+        _car.transform.position = _carStartPosition;
     }
 
     public void SetTargetFramerate()
@@ -70,7 +77,7 @@ public class FrameCounterController : MonoBehaviour
         _frameCount = int.Parse(_targetFPSInputField.text);
         Application.targetFrameRate = _frameCount;
 
-        PoolFrames();
+        _uiViewFrameContainer.UpdateFrameCount(_frameCount);
     }
 
     public void SetSpeed()
@@ -86,8 +93,9 @@ public class FrameCounterController : MonoBehaviour
     {
         if (!_isEventStarted) return;
 
-        TrackLastAndCurrentFrame();
         PushMovingEntityForward();
+        _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
+        _uiViewTimeContainer.UpdateTime();
 
         _fpsStatsText.text = "FPS: " + (1 / Time.deltaTime).ToString("F1");
 
@@ -98,13 +106,6 @@ public class FrameCounterController : MonoBehaviour
         {
             _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
         }
-    }
-
-    private void EnableDeltaTimeObjects(bool isEnabled)
-    {
-        _lastFrame.gameObject.SetActive(isEnabled);
-        _currentFrame.gameObject.SetActive(isEnabled);
-        _deltaTime.gameObject.SetActive(isEnabled);
     }
 
     private void PushMovingEntityForward()
@@ -137,71 +138,5 @@ public class FrameCounterController : MonoBehaviour
         }
 
         _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
-    }
-
-    private void PoolFrames()
-    {
-        for (int i = 0; i < _framesArray.Length; i++)
-        {
-            _framesArray[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < _frameCount; i++)
-        {
-            _framesArray[i].gameObject.SetActive(true);
-        }
-
-        ResetPositions();
-    }
-
-    private void CreateFrames()
-    {
-        Application.targetFrameRate = _frameCount;
-        
-        _framesArray = new Transform[_frameCount];
-
-        for (int i = 0; i < _frameCount; i++)
-        {
-            Image frame = Instantiate(_frame, _frameContainer);
-            _framesArray[i] = frame.transform;
-        }
-    }
-
-    private void TrackLastAndCurrentFrame()
-    {
-        _frameIndex++;
-
-        if(_frameIndex >= _frameCount - 1)
-        {
-            _frameIndex = 0;
-        }
-
-        _lastFrame.transform.position = _framesArray[_frameIndex].position;
-        _currentFrame.transform.position = _framesArray[_frameIndex + 1].position;
-
-        UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
-
-        _lastFrameText.text = $"Last frame: {_frameIndex}";
-        _currentFrameText.text = $"Current frame: {_frameIndex + 1}";
-    }
-
-    private void UpdateDeltaTime(float frameOffset)
-    {
-        Vector2 size = new Vector2(frameOffset, 10);
-
-        _deltaTime.GetComponent<RectTransform>().sizeDelta = size;
-        _deltaTime.transform.position = new Vector2((_currentFrame.transform.position.x + _lastFrame.transform.position.x) / 2, _framesArray[0].transform.position.y);
-        _deltaTime.GetComponentInChildren<TMP_Text>().text = Time.deltaTime.ToString("F4");
-    }
-
-    private void ResetPositions()
-    {
-        _lastFrame.transform.position = _framesArray[0].position;
-        _currentFrame.transform.position = _framesArray[1].position;
-
-        UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
-
-        _car.transform.position = _carStartPosition;
-        _timeElapsed = 0;
     }
 }
