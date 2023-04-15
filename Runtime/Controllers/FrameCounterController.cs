@@ -103,6 +103,16 @@ public class FrameCounterController : MonoBehaviour
 
     public void SetTargetFramerate()
     {
+        if(int.Parse(_targetFPSInputField.text) > 60)
+        {
+            _frameCount = 60;
+
+            Application.targetFrameRate = _frameCount;
+            _uiViewFrameContainer.UpdateFrameCount(_frameCount);
+            _targetFPSInputField.text = "60";
+            return;
+        }
+
         _frameCount = int.Parse(_targetFPSInputField.text);
         Application.targetFrameRate = _frameCount;
 
