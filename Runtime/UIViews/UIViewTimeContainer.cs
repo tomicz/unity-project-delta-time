@@ -32,7 +32,7 @@ namespace TOMICZ.DeltaTimeSimulator.UIViews
             float speed = _startPosition.y - _endPosition.y / 60;
             _currentSecondImage.transform.position += Vector3.down * speed * Time.deltaTime;
 
-            if(_currentSecondImage.transform.position.y <= _endPosition.y)
+            if (_currentSecondImage.transform.position.y <= _endPosition.y)
             {
                 OnActionCompleted?.Invoke();
                 _currentSecondImage.transform.position = _startPosition;
@@ -46,13 +46,13 @@ namespace TOMICZ.DeltaTimeSimulator.UIViews
 
         private void InitiliseCurrentSecond()
         {
-            float x = _secondsArray[0].GetComponent<RectTransform>().sizeDelta.x;
-            float y = _secondsArray[0].GetComponent<RectTransform>().sizeDelta.y;
+            //float x = _secondsArray[0].GetComponent<RectTransform>().sizeDelta.x;
+            //float y = _secondsArray[0].GetComponent<RectTransform>().sizeDelta.y;
 
             _startPosition = _secondsArray[0].transform.position;
             _endPosition = _secondsArray[_secondsArray.Length - 1].transform.position;
 
-            _currentSecondImage.GetComponent<RectTransform>().sizeDelta = new Vector2(x, y);
+            //_currentSecondImage.GetComponent<RectTransform>().sizeDelta = new Vector2(x, 5);
             _currentSecondImage.transform.position = _startPosition;
         }
 

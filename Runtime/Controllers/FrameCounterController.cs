@@ -8,7 +8,7 @@ public class FrameCounterController : MonoBehaviour
 {
     [Header("Properties")]
     [SerializeField] private int _frameCount = 60;
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private float _carOffsetY = 60f;
 
     [Header("Dependencies")]
@@ -48,13 +48,11 @@ public class FrameCounterController : MonoBehaviour
     private void Awake()
     {
         _uiViewTimeContainer.OnActionCompleted += OnTimeCycleCompletedEventHandler;
-        //EnableDeltaTimeObjects(false);
-        Application.targetFrameRate = _frameCount;
     }
 
     private void OnTimeCycleCompletedEventHandler()
     {
-
+        _uiViewFrameContainer.ResetIndex();
     }
 
     private void OnEnable()
@@ -64,7 +62,6 @@ public class FrameCounterController : MonoBehaviour
 
     public void StartEvent()
     {
-        //EnableDeltaTimeObjects(true);
         _uiViewFrameContainer.Show();
         _isEventStarted = true;
         ToggleDeltaTime();
@@ -75,18 +72,18 @@ public class FrameCounterController : MonoBehaviour
 
     public void StopEvent()
     {
-        _frameIndex = 0;
+        _uiViewFrameContainer.ResetIndex();
         _isEventStarted = false;
-        //ResetPositions();
         _uiViewFrameContainer.Hide();
     }
 
     public void SetTargetFramerate()
     {
-        //_frameCount = int.Parse(_targetFPSInputField.text);
-        //Application.targetFrameRate = _frameCount;
+        _frameCount = int.Parse(_targetFPSInputField.text);
+        Application.targetFrameRate = _frameCount;
 
-        PoolFrames();
+        //PoolFrames();
+        _uiViewFrameContainer.UpdateFrameCount(_frameCount);
     }
 
     public void SetSpeed()
@@ -102,10 +99,8 @@ public class FrameCounterController : MonoBehaviour
     {
         if (!_isEventStarted) return;
 
-        //TrackLastAndCurrentFrame();
-        //_frameIndex++;
         PushMovingEntityForward();
-        _uiViewFrameContainer.UpdateFrameIndexes();
+        _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
 
         _fpsStatsText.text = "FPS: " + (1 / Time.deltaTime).ToString("F1");
@@ -117,11 +112,6 @@ public class FrameCounterController : MonoBehaviour
         {
             _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
         }
-    }
-
-    private void EnableDeltaTimeObjects(bool isEnabled)
-    {
-        _uiViewFrameContainer.Show();
     }
 
     private void PushMovingEntityForward()

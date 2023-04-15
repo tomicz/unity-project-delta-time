@@ -32,11 +32,11 @@ public class UIViewFrameContainer : MonoBehaviour
         StartCoroutine(WaitFrame());
     }
 
-    public void UpdateFrameIndexes()
+    public void UpdateFrameIndexes(int frameCount)
     {
         _framesIndex++;
 
-        if (_framesIndex >= _framesAtStart - 1)
+        if (_framesIndex >= frameCount - 1)
         {
             _framesIndex = 0;
         }
@@ -44,21 +44,42 @@ public class UIViewFrameContainer : MonoBehaviour
         _lastFrameImage.transform.position = _framesArray[_framesIndex].transform.position;
         _currentFrameImage.transform.position = _framesArray[_framesIndex + 1].transform.position;
 
-        UpdateDeltaTime(Mathf.Abs(_currentFrameImage.transform.position.y - _lastFrameImage.transform.position.y));
+        _lastFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex].GetComponent<RectTransform>().rect.height);
+        _currentFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.height);
+
+        //UpdateDeltaTime(Mathf.Abs(_currentFrameImage.transform.position.y - _lastFrameImage.transform.position.y));
+    }
+
+    public void ResetIndex()
+    {
+        _framesIndex = 0;
     }
 
     public void Show()
     {
         _lastFrameImage.gameObject.SetActive(true);
         _currentFrameImage.gameObject.SetActive(true);
-        _deltaTimeImage.gameObject.SetActive(true);
+        //_deltaTimeImage.gameObject.SetActive(true);
     }
 
     public void Hide()
     {
-        _lastFrameImage.gameObject.SetActive(false);
-        _currentFrameImage.gameObject.SetActive(false);
-        _deltaTimeImage.gameObject.SetActive(false);
+        //_lastFrameImage.gameObject.SetActive(false);
+        //_currentFrameImage.gameObject.SetActive(false);
+        //_deltaTimeImage.gameObject.SetActive(false);
+    }
+
+    public void UpdateFrameCount(int frameCount)
+    {
+        for (int i = 0; i < _framesArray.Length; i++)
+        {
+            _framesArray[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < frameCount; i++)
+        {
+            _framesArray[i].gameObject.SetActive(true);
+        }
     }
 
     private IEnumerator WaitFrame()
@@ -72,28 +93,28 @@ public class UIViewFrameContainer : MonoBehaviour
     {
         _framesArray = new Image[_framesAtStart];
 
-        Vector3 top = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y - _frameHeight + _rectTransform.rect.height) / 2;
-        Vector3 bottom = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y + _frameHeight - _rectTransform.rect.height) / 2;
-        Vector3 distance = top - bottom;
-        Vector3 height = (distance / _framesAtStart);
-        Vector3 position = Vector3.zero;
+        //Vector3 top = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y - _frameHeight + _rectTransform.rect.height) / 2;
+        //Vector3 bottom = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y + _frameHeight - _rectTransform.rect.height) / 2;
+        //Vector3 distance = top - bottom;
+        //Vector3 height = (distance / _framesAtStart);
+        //Vector3 position = Vector3.zero;
 
         for (int i = 0; i < _framesAtStart; i++)
         {
             Image frame = Instantiate(_frameImage, transform);
-            frame.GetComponent<RectTransform>().sizeDelta = new Vector2(_frameWidth, _frameHeight);
-            frame.transform.localPosition = top - position;
+            //frame.GetComponent<RectTransform>().sizeDelta = new Vector2(_frameWidth, _frameHeight);
+            //    frame.transform.localPosition = top - position;
 
-            position += height;
+            //    position += height;
 
             _framesArray[i] = frame;
         }
 
-        Image lastFrame = Instantiate(_frameImage, transform);
-        lastFrame.GetComponent<RectTransform>().sizeDelta = new Vector2(_frameWidth, _frameHeight);
-        lastFrame.transform.localPosition = bottom;
+        //Image lastFrame = Instantiate(_frameImage, transform);
+        //lastFrame.GetComponent<RectTransform>().sizeDelta = new Vector2(_frameWidth, _frameHeight);
+        //lastFrame.transform.localPosition = bottom;
 
-        _framesArray[_framesArray.Length - 1] = lastFrame;
+        //_framesArray[_framesArray.Length - 1] = lastFrame;
     }
 
     private void UpdateDeltaTime(float frameOffset)
