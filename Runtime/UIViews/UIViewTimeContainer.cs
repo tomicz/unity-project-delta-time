@@ -39,6 +39,11 @@ namespace TOMICZ.DeltaTimeSimulator.UIViews
             }
         }
 
+        public void Reset()
+        {
+            _currentSecondImage.transform.position = _startPosition;
+        }
+
         private void GetAllSecondsIntoAnArray()
         {
             _secondsArray = _secondsContainer.transform.GetComponentsInChildren<Image>();

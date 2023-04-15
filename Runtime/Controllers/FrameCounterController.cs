@@ -19,6 +19,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private Toggle _isDeltaTimeEnabledToggle;
     [SerializeField] private TMP_InputField _targetFPSInputField;
     [SerializeField] private TMP_InputField _speedInputField;
+    [SerializeField] private TMP_Text _pauseButtonText;
 
     [Header("Transforms")]
     [SerializeField] private Transform _frameContainer;
@@ -39,6 +40,7 @@ public class FrameCounterController : MonoBehaviour
 
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
+    private bool _isEventPaused = false;
     private float _timeElapsed = 0;
     private Vector3 _carStartPosition = Vector3.zero;
 
@@ -60,17 +62,40 @@ public class FrameCounterController : MonoBehaviour
 
     public void StartEvent()
     {
+        if (_isEventPaused)
+        {
+            _pauseButtonText.text = $"Pause";
+            _isEventPaused = false;
+        }
+
+        ResetStats();
         _uiViewFrameContainer.Show();
         _isEventStarted = true;
-        ToggleDeltaTime();
     }
 
     public void StopEvent()
     {
-        _uiViewFrameContainer.ResetIndex();
+        if (_isEventPaused)
+        {
+            _pauseButtonText.text = $"Pause";
+            _isEventPaused = false;
+        }
         _isEventStarted = false;
         _uiViewFrameContainer.Hide();
-        _car.transform.position = _carStartPosition;
+        ResetStats();
+    }
+
+    public void Pause()
+    {
+        if (!_isEventPaused)
+        {
+            _isEventPaused = true;
+            _pauseButtonText.text = $"Resume";
+        }
+        else{
+            _isEventPaused = false;
+            _pauseButtonText.text = $"Pause";
+        }
     }
 
     public void SetTargetFramerate()
@@ -93,6 +118,7 @@ public class FrameCounterController : MonoBehaviour
     private void Update()
     {
         if (!_isEventStarted) return;
+        if (_isEventPaused) return;
 
         PushMovingEntityForward();
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
@@ -139,5 +165,13 @@ public class FrameCounterController : MonoBehaviour
         }
 
         _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
+    }
+
+    private void ResetStats()
+    {
+        _timeElapsed = 0;
+        _car.transform.position = _carStartPosition;
+        _uiViewFrameContainer.ResetIndex();
+        _uiViewTimeContainer.Reset();
     }
 }
