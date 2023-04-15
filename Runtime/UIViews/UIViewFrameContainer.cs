@@ -58,13 +58,13 @@ public class UIViewFrameContainer : MonoBehaviour
     public void Show()
     {
         _lastFrameImage.gameObject.SetActive(true);
-        _currentFrameImage.gameObject.SetActive(true);
+        //_currentFrameImage.gameObject.SetActive(true);
         //_deltaTimeImage.gameObject.SetActive(true);
     }
 
     public void Hide()
     {
-        //_lastFrameImage.gameObject.SetActive(false);
+        _lastFrameImage.gameObject.SetActive(false);
         //_currentFrameImage.gameObject.SetActive(false);
         //_deltaTimeImage.gameObject.SetActive(false);
     }
