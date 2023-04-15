@@ -18,14 +18,8 @@ public class UIViewFrameContainer : MonoBehaviour
     [SerializeField] private float _frameWidth = 20;
     [SerializeField] private int _framesAtStart = 60;
 
-    private RectTransform _rectTransform = null;
     private Image[] _framesArray;
     private int _framesIndex = 0;
-
-    private void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-    }
 
     private void Start()
     {
@@ -34,8 +28,6 @@ public class UIViewFrameContainer : MonoBehaviour
 
     public void UpdateFrameIndexes(int frameCount)
     {
-        _framesIndex++;
-
         if (_framesIndex >= frameCount - 1)
         {
             _framesIndex = 0;
@@ -47,7 +39,7 @@ public class UIViewFrameContainer : MonoBehaviour
         _lastFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex].GetComponent<RectTransform>().rect.height);
         _currentFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.height);
 
-        //UpdateDeltaTime(Mathf.Abs(_currentFrameImage.transform.position.y - _lastFrameImage.transform.position.y));
+        _framesIndex++;
     }
 
     public void ResetIndex()
@@ -58,15 +50,11 @@ public class UIViewFrameContainer : MonoBehaviour
     public void Show()
     {
         _lastFrameImage.gameObject.SetActive(true);
-        //_currentFrameImage.gameObject.SetActive(true);
-        //_deltaTimeImage.gameObject.SetActive(true);
     }
 
     public void Hide()
     {
         _lastFrameImage.gameObject.SetActive(false);
-        //_currentFrameImage.gameObject.SetActive(false);
-        //_deltaTimeImage.gameObject.SetActive(false);
     }
 
     public void UpdateFrameCount(int frameCount)
@@ -93,35 +81,11 @@ public class UIViewFrameContainer : MonoBehaviour
     {
         _framesArray = new Image[_framesAtStart];
 
-        //Vector3 top = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y - _frameHeight + _rectTransform.rect.height) / 2;
-        //Vector3 bottom = new Vector3(_rectTransform.anchoredPosition.x, _rectTransform.anchoredPosition.y + _frameHeight - _rectTransform.rect.height) / 2;
-        //Vector3 distance = top - bottom;
-        //Vector3 height = (distance / _framesAtStart);
-        //Vector3 position = Vector3.zero;
-
         for (int i = 0; i < _framesAtStart; i++)
         {
             Image frame = Instantiate(_frameImage, transform);
-            //frame.GetComponent<RectTransform>().sizeDelta = new Vector2(_frameWidth, _frameHeight);
-            //    frame.transform.localPosition = top - position;
-
-            //    position += height;
 
             _framesArray[i] = frame;
         }
-
-        //Image lastFrame = Instantiate(_frameImage, transform);
-        //lastFrame.GetComponent<RectTransform>().sizeDelta = new Vector2(_frameWidth, _frameHeight);
-        //lastFrame.transform.localPosition = bottom;
-
-        //_framesArray[_framesArray.Length - 1] = lastFrame;
-    }
-
-    private void UpdateDeltaTime(float frameOffset)
-    {
-        Vector2 size = new Vector2(10, frameOffset);
-
-        _deltaTimeImage.GetComponent<RectTransform>().sizeDelta = size;
-        _deltaTimeImage.transform.position = new Vector2(_framesArray[0].transform.position.x, (_currentFrameImage.transform.position.y + _lastFrameImage.transform.position.y) / 2);
     }
 }
