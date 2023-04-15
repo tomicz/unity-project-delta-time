@@ -18,7 +18,7 @@ public class DeltaTimeController : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = _targetFps;
+        //Application.targetFrameRate = _targetFps;
     }
 
     private void Update()

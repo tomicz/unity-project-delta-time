@@ -27,7 +27,7 @@ namespace TOMICZ.DeltaTimeSimulator.UIViews
             StartCoroutine(WaitFrame());
         }
 
-        private void Update()
+        public void UpdateTime()
         {
             float speed = _startPosition.y - _endPosition.y / 60;
             _currentSecondImage.transform.position += Vector3.down * speed * Time.deltaTime;

@@ -36,6 +36,7 @@ public class FrameCounterController : MonoBehaviour
 
     [Header("UIView Dependencies")]
     [SerializeField] private UIViewTimeContainer _uiViewTimeContainer;
+    [SerializeField] private UIViewFrameContainer _uiViewFrameContainer;
 
     private Transform[] _framesArray;
     private int _frameIndex = 0;
@@ -46,9 +47,9 @@ public class FrameCounterController : MonoBehaviour
 
     private void Awake()
     {
-        //CreateFrames();
         _uiViewTimeContainer.OnActionCompleted += OnTimeCycleCompletedEventHandler;
-        EnableDeltaTimeObjects(false);
+        //EnableDeltaTimeObjects(false);
+        Application.targetFrameRate = _frameCount;
     }
 
     private void OnTimeCycleCompletedEventHandler()
@@ -63,23 +64,27 @@ public class FrameCounterController : MonoBehaviour
 
     public void StartEvent()
     {
-        EnableDeltaTimeObjects(true);
+        //EnableDeltaTimeObjects(true);
+        _uiViewFrameContainer.Show();
         _isEventStarted = true;
         ToggleDeltaTime();
+
+        Debug.Log(Application.targetFrameRate);
+
     }
 
     public void StopEvent()
     {
         _frameIndex = 0;
         _isEventStarted = false;
-        ResetPositions();
-        EnableDeltaTimeObjects(false);
+        //ResetPositions();
+        _uiViewFrameContainer.Hide();
     }
 
     public void SetTargetFramerate()
     {
-        _frameCount = int.Parse(_targetFPSInputField.text);
-        Application.targetFrameRate = _frameCount;
+        //_frameCount = int.Parse(_targetFPSInputField.text);
+        //Application.targetFrameRate = _frameCount;
 
         PoolFrames();
     }
@@ -97,8 +102,11 @@ public class FrameCounterController : MonoBehaviour
     {
         if (!_isEventStarted) return;
 
-        TrackLastAndCurrentFrame();
+        //TrackLastAndCurrentFrame();
+        //_frameIndex++;
         PushMovingEntityForward();
+        _uiViewFrameContainer.UpdateFrameIndexes();
+        _uiViewTimeContainer.UpdateTime();
 
         _fpsStatsText.text = "FPS: " + (1 / Time.deltaTime).ToString("F1");
 
@@ -113,9 +121,7 @@ public class FrameCounterController : MonoBehaviour
 
     private void EnableDeltaTimeObjects(bool isEnabled)
     {
-        _lastFrame.gameObject.SetActive(isEnabled);
-        _currentFrame.gameObject.SetActive(isEnabled);
-        _deltaTime.gameObject.SetActive(isEnabled);
+        _uiViewFrameContainer.Show();
     }
 
     private void PushMovingEntityForward()
@@ -165,19 +171,6 @@ public class FrameCounterController : MonoBehaviour
         ResetPositions();
     }
 
-    private void CreateFrames()
-    {
-        Application.targetFrameRate = _frameCount;
-        
-        _framesArray = new Transform[_frameCount];
-
-        for (int i = 0; i < _frameCount; i++)
-        {
-            Image frame = Instantiate(_frame, _frameContainer);
-            _framesArray[i] = frame.transform;
-        }
-    }
-
     private void TrackLastAndCurrentFrame()
     {
         _frameIndex++;
@@ -207,8 +200,8 @@ public class FrameCounterController : MonoBehaviour
 
     private void ResetPositions()
     {
-        _lastFrame.transform.position = _framesArray[0].position;
-        _currentFrame.transform.position = _framesArray[1].position;
+        //_lastFrame.transform.position = _framesArray[0].position;
+        //_currentFrame.transform.position = _framesArray[1].position;
 
         UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
 
