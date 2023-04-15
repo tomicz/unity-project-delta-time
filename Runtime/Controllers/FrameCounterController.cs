@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using TOMICZ.DeltaTimeSimulator.UIViews;
 using UnityEngine;
@@ -38,8 +37,6 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private UIViewTimeContainer _uiViewTimeContainer;
     [SerializeField] private UIViewFrameContainer _uiViewFrameContainer;
 
-    private Transform[] _framesArray;
-    private int _frameIndex = 0;
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
     private float _timeElapsed = 0;
@@ -65,9 +62,6 @@ public class FrameCounterController : MonoBehaviour
         _uiViewFrameContainer.Show();
         _isEventStarted = true;
         ToggleDeltaTime();
-
-        Debug.Log(Application.targetFrameRate);
-
     }
 
     public void StopEvent()
@@ -82,7 +76,6 @@ public class FrameCounterController : MonoBehaviour
         _frameCount = int.Parse(_targetFPSInputField.text);
         Application.targetFrameRate = _frameCount;
 
-        //PoolFrames();
         _uiViewFrameContainer.UpdateFrameCount(_frameCount);
     }
 
@@ -144,58 +137,5 @@ public class FrameCounterController : MonoBehaviour
         }
 
         _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
-    }
-
-    private void PoolFrames()
-    {
-        for (int i = 0; i < _framesArray.Length; i++)
-        {
-            _framesArray[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < _frameCount; i++)
-        {
-            _framesArray[i].gameObject.SetActive(true);
-        }
-
-        ResetPositions();
-    }
-
-    private void TrackLastAndCurrentFrame()
-    {
-        _frameIndex++;
-
-        if(_frameIndex >= _frameCount - 1)
-        {
-            _frameIndex = 0;
-        }
-
-        _lastFrame.transform.position = _framesArray[_frameIndex].position;
-        _currentFrame.transform.position = _framesArray[_frameIndex + 1].position;
-
-        UpdateDeltaTime(Mathf.Abs(_currentFrame.transform.position.y - _lastFrame.transform.position.y));
-
-        _lastFrameText.text = $"Last frame: {_frameIndex}";
-        _currentFrameText.text = $"Current frame: {_frameIndex + 1}";
-    }
-
-    private void UpdateDeltaTime(float frameOffset)
-    {
-        Vector2 size = new Vector2(10, frameOffset);
-
-        _deltaTime.GetComponent<RectTransform>().sizeDelta = size;
-        _deltaTime.transform.position = new Vector2(_framesArray[0].transform.position.x, (_currentFrame.transform.position.y + _lastFrame.transform.position.y) / 2);
-        _deltaTime.GetComponentInChildren<TMP_Text>().text = Time.deltaTime.ToString("F4");
-    }
-
-    private void ResetPositions()
-    {
-        //_lastFrame.transform.position = _framesArray[0].position;
-        //_currentFrame.transform.position = _framesArray[1].position;
-
-        UpdateDeltaTime(_currentFrame.transform.position.x - _lastFrame.transform.position.x);
-
-        _car.transform.position = _carStartPosition;
-        _timeElapsed = 0;
     }
 }
