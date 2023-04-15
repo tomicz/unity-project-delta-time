@@ -69,6 +69,7 @@ public class FrameCounterController : MonoBehaviour
         _uiViewFrameContainer.ResetIndex();
         _isEventStarted = false;
         _uiViewFrameContainer.Hide();
+        _car.transform.position = _carStartPosition;
     }
 
     public void SetTargetFramerate()
