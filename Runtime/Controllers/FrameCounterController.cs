@@ -64,7 +64,7 @@ public class FrameCounterController : MonoBehaviour
 
     private void OnEnable()
     {
-        _carStartPosition = _car.transform.position;
+        //_carStartPosition = _car.transform.position;
     }
 
     public void StartEvent()
@@ -76,9 +76,9 @@ public class FrameCounterController : MonoBehaviour
         }
 
         SetTargetFramerate();
-        ToggleDeltaTime();
-        ToggleFixedDeltaTime();
-        ToggleLoop();
+        //ToggleDeltaTime();
+        //ToggleFixedDeltaTime();
+        //ToggleLoop();
         ResetStats();
 
         _uiViewFrameContainer.Show();
@@ -148,17 +148,17 @@ public class FrameCounterController : MonoBehaviour
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
-        if (_isUpdateRunning)
-        {
-            if (_isDeltaTimeEnabled)
-            {
-                PushMovingEntityForwardDeltaTime();
-            }
-            else
-            {
-                PushMovingEntityForwardUpdate();
-            }
-        }
+        //if (_isUpdateRunning)
+        //{
+        //    if (_isDeltaTimeEnabled)
+        //    {
+        //        PushMovingEntityForwardDeltaTime();
+        //    }
+        //    else
+        //    {
+        //        PushMovingEntityForwardUpdate();
+        //    }
+        //}
 
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
@@ -181,15 +181,15 @@ public class FrameCounterController : MonoBehaviour
 
         if (!_isUpdateRunning)
         {
-            _uiViewFrameContainer.UpdateMissingFrame();
-            if (_isFixedDeltaTimeEnabled)
-            {
-                PushMovingEntityForwardFixedDeltaTime();
-            }
-            else
-            {
-                PushMovingEntityForwardFixedUpdate();
-            }
+            //_uiViewFrameContainer.UpdateMissingFrame();
+            //if (_isFixedDeltaTimeEnabled)
+            //{
+            //    PushMovingEntityForwardFixedDeltaTime();
+            //}
+            //else
+            //{
+            //    PushMovingEntityForwardFixedUpdate();
+            //}
         }
 
         _uiViewFixedFrameContainer.UpdateFrames();
@@ -266,7 +266,7 @@ public class FrameCounterController : MonoBehaviour
     private void ResetStats()
     {
         _timeElapsed = 0;
-        _car.transform.position = _carStartPosition;
+        //_car.transform.position = _carStartPosition;
         _uiViewFrameContainer.ResetIndex();
         _uiViewTimeContainer.Reset();
     }
