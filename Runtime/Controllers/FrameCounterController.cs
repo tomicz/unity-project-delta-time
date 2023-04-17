@@ -37,6 +37,7 @@ public class FrameCounterController : MonoBehaviour
     [Header("UIView Dependencies")]
     [SerializeField] private UIViewTimeContainer _uiViewTimeContainer;
     [SerializeField] private UIViewFrameContainer _uiViewFrameContainer;
+    [SerializeField] private UIViewFixedFrameContainer _uiViewFixedFrameContainer;
 
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
@@ -85,6 +86,7 @@ public class FrameCounterController : MonoBehaviour
         }
         _isEventStarted = false;
         _uiViewFrameContainer.Hide();
+        _uiViewFixedFrameContainer.Stop();
         ResetStats();
     }
 
@@ -146,6 +148,14 @@ public class FrameCounterController : MonoBehaviour
         {
             _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!_isEventStarted) return;
+        if (_isEventPaused) return;
+
+        _uiViewFixedFrameContainer.UpdateFrames();
     }
 
     private void PushMovingEntityForward()

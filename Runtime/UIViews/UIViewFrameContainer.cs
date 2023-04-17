@@ -28,11 +28,6 @@ public class UIViewFrameContainer : MonoBehaviour
 
     public void UpdateFrameIndexes(int frameCount)
     {
-        if (_framesIndex >= frameCount - 1)
-        {
-            _framesIndex = 0;
-        }
-
         _lastFrameImage.transform.position = _framesArray[_framesIndex].transform.position;
         _currentFrameImage.transform.position = _framesArray[_framesIndex + 1].transform.position;
 
@@ -40,6 +35,11 @@ public class UIViewFrameContainer : MonoBehaviour
         _currentFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.height);
 
         _framesIndex++;
+
+        if (_framesIndex >= frameCount - 1)
+        {
+            _framesIndex = 0;
+        }
     }
 
     public void ResetIndex()
