@@ -18,6 +18,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private Image _car;
     [SerializeField] private Toggle _isDeltaTimeEnabledToggle;
     [SerializeField] private Toggle _isFixedDeltaTimeEnabledToggle;
+    [SerializeField] private Toggle _loopToggle;
     [SerializeField] private TMP_InputField _targetFPSInputField;
     [SerializeField] private TMP_InputField _speedInputField;
     [SerializeField] private TMP_Text _pauseButtonText;
@@ -44,6 +45,7 @@ public class FrameCounterController : MonoBehaviour
     private bool _isDeltaTimeEnabled = false;
     private bool _isEventPaused = false;
     private bool _isFixedDeltaTimeEnabled = false;
+    private bool _isUpdateRunning = false;
     private float _timeElapsed = 0;
     private Vector3 _carStartPosition = Vector3.zero;
 
@@ -73,6 +75,7 @@ public class FrameCounterController : MonoBehaviour
 
         ToggleDeltaTime();
         ToggleFixedDeltaTime();
+        ToggleLoop();
         ResetStats();
 
         _uiViewFrameContainer.Show();
@@ -133,22 +136,16 @@ public class FrameCounterController : MonoBehaviour
 
     public void DisableDeltaTime() => _isDeltaTimeEnabled = false;
 
-    public void EnableDeltaTimeToggle(bool enabled)
-    {
-        _isDeltaTimeEnabledToggle.isOn = enabled;
-    }
+    public void EnableDeltaTimeToggle(bool enabled) => _isDeltaTimeEnabledToggle.isOn = enabled;
 
-    public void EnableFixedDeltaTimeToggle(bool enabled)
-    {
-        _isFixedDeltaTimeEnabledToggle.isOn = enabled;
-    }
+    public void EnableFixedDeltaTimeToggle(bool enabled) => _isFixedDeltaTimeEnabledToggle.isOn = enabled;
 
     private void Update()
     {
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
-        if (!_isFixedDeltaTimeEnabled)
+        if (_isUpdateRunning)
         {
             if (_isDeltaTimeEnabled)
             {
@@ -156,9 +153,10 @@ public class FrameCounterController : MonoBehaviour
             }
             else
             {
-                PushMovingEntityForward();
+                PushMovingEntityForwardUpdate();
             }
         }
+
 
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
@@ -179,25 +177,39 @@ public class FrameCounterController : MonoBehaviour
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
-        if (_isFixedDeltaTimeEnabled)
+        if (!_isUpdateRunning)
         {
-            PushMovingEntityForwardFixedDeltaTime();
+            if (_isFixedDeltaTimeEnabled)
+            {
+                PushMovingEntityForwardFixedDeltaTime();
+            }
+            else
+            {
+                PushMovingEntityForwardFixedUpdate();
+            }
         }
 
         _uiViewFixedFrameContainer.UpdateFrames();
     }
 
-    private void PushMovingEntityForward()
+    private void PushMovingEntityForwardUpdate()
     {
         _car.transform.position += Vector3.right * _moveSpeed; ;
-        _moveSpeedText.text = $"Move speed: {_moveSpeed}/f";
+        _moveSpeedText.text = $"Move speed: {_moveSpeed}/frame";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardDeltaTime()
     {
         _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
-        _moveSpeedText.text = $"Move speed: {_moveSpeed}/s";
+        _moveSpeedText.text = $"Move speed: {_moveSpeed}/second";
+        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+    }
+
+    private void PushMovingEntityForwardFixedUpdate()
+    {
+        _car.transform.position += Vector3.right * _moveSpeed;
+        _moveSpeedText.text = $"Move speed: {_moveSpeed}/phyx";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
@@ -231,6 +243,22 @@ public class FrameCounterController : MonoBehaviour
         else
         {
             _isFixedDeltaTimeEnabled = false;
+        }
+    }
+
+    private void ToggleLoop()
+    {
+        if (!_loopToggle.isOn)
+        {
+            _loopToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = "Loop: Update";
+            _isUpdateRunning = true;
+            StopEvent();
+        }
+        else
+        {
+            _loopToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = "Loop: FixedUpdate";
+            _isUpdateRunning = false;
+            StopEvent();
         }
     }
 
