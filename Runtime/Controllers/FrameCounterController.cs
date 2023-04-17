@@ -17,6 +17,7 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private Image _deltaTime;
     [SerializeField] private Image _car;
     [SerializeField] private Toggle _isDeltaTimeEnabledToggle;
+    [SerializeField] private Toggle _isFixedDeltaTimeEnabledToggle;
     [SerializeField] private TMP_InputField _targetFPSInputField;
     [SerializeField] private TMP_InputField _speedInputField;
     [SerializeField] private TMP_Text _pauseButtonText;
@@ -42,6 +43,7 @@ public class FrameCounterController : MonoBehaviour
     private bool _isEventStarted = false;
     private bool _isDeltaTimeEnabled = false;
     private bool _isEventPaused = false;
+    private bool _isFixedDeltaTimeEnabled = false;
     private float _timeElapsed = 0;
     private Vector3 _carStartPosition = Vector3.zero;
 
@@ -70,8 +72,9 @@ public class FrameCounterController : MonoBehaviour
         }
 
         ToggleDeltaTime();
-
+        ToggleFixedDeltaTime();
         ResetStats();
+
         _uiViewFrameContainer.Show();
         _isEventStarted = true;
         
@@ -130,12 +133,33 @@ public class FrameCounterController : MonoBehaviour
 
     public void DisableDeltaTime() => _isDeltaTimeEnabled = false;
 
+    public void EnableDeltaTimeToggle(bool enabled)
+    {
+        _isDeltaTimeEnabledToggle.isOn = enabled;
+    }
+
+    public void EnableFixedDeltaTimeToggle(bool enabled)
+    {
+        _isFixedDeltaTimeEnabledToggle.isOn = enabled;
+    }
+
     private void Update()
     {
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
-        PushMovingEntityForward();
+        if (!_isFixedDeltaTimeEnabled)
+        {
+            if (_isDeltaTimeEnabled)
+            {
+                PushMovingEntityForwardDeltaTime();
+            }
+            else
+            {
+                PushMovingEntityForward();
+            }
+        }
+
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
 
@@ -155,24 +179,32 @@ public class FrameCounterController : MonoBehaviour
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
+        if (_isFixedDeltaTimeEnabled)
+        {
+            PushMovingEntityForwardFixedDeltaTime();
+        }
+
         _uiViewFixedFrameContainer.UpdateFrames();
     }
 
     private void PushMovingEntityForward()
     {
-        if (_isDeltaTimeEnabled)
-        {
-            _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
+        _car.transform.position += Vector3.right * _moveSpeed; ;
+        _moveSpeedText.text = $"Move speed: {_moveSpeed}/f";
+        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+    }
 
-            _moveSpeedText.text = $"Move speed: {_moveSpeed}/s";
-        }
-        else
-        {
-            _car.transform.position += Vector3.right * _moveSpeed; ;
+    private void PushMovingEntityForwardDeltaTime()
+    {
+        _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
+        _moveSpeedText.text = $"Move speed: {_moveSpeed}/s";
+        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+    }
 
-            _moveSpeedText.text = $"Move speed: {_moveSpeed}/f";
-        }
-
+    private void PushMovingEntityForwardFixedDeltaTime()
+    {
+        _car.transform.position += Vector3.right * (_moveSpeed * Time.fixedDeltaTime);
+        _moveSpeedText.text = $"Move speed: {_moveSpeed}/s";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
@@ -188,6 +220,18 @@ public class FrameCounterController : MonoBehaviour
         }
 
         _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
+    }
+
+    private void ToggleFixedDeltaTime()
+    {
+        if (_isFixedDeltaTimeEnabledToggle.isOn)
+        {
+            _isFixedDeltaTimeEnabled = true;
+        }
+        else
+        {
+            _isFixedDeltaTimeEnabled = false;
+        }
     }
 
     private void ResetStats()

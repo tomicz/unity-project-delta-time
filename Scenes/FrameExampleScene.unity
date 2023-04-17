@@ -1366,8 +1366,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1, y: 0}
-  m_SizeDelta: {x: 298, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &271018614
 CanvasRenderer:
@@ -3049,7 +3049,7 @@ GameObject:
   - component: {fileID: 497086289}
   - component: {fileID: 497086290}
   m_Layer: 5
-  m_Name: EnableDeltaTime
+  m_Name: EnableFixedDeltaTime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3122,7 +3122,31 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 624792563}
+        m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
+        m_MethodName: StopEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 624792563}
+        m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
+        m_MethodName: EnableDeltaTimeToggle
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &523195877
 GameObject:
@@ -3585,6 +3609,7 @@ MonoBehaviour:
   _deltaTime: {fileID: 887456788}
   _car: {fileID: 523195879}
   _isDeltaTimeEnabledToggle: {fileID: 1288877210}
+  _isFixedDeltaTimeEnabledToggle: {fileID: 497086290}
   _targetFPSInputField: {fileID: 1426692737}
   _speedInputField: {fileID: 653667307}
   _pauseButtonText: {fileID: 1568808673}
@@ -4920,10 +4945,10 @@ RectTransform:
   m_Father: {fileID: 1174110477}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.4, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -19.7}
+  m_SizeDelta: {x: 0, y: 39.4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &988634191
 MonoBehaviour:
@@ -5235,8 +5260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 149, y: 0}
-  m_SizeDelta: {x: 298, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1028250930
 MonoBehaviour:
@@ -5512,8 +5537,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1, y: 0}
-  m_SizeDelta: {x: 298, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1109698373
 CanvasRenderer:
@@ -6132,10 +6157,10 @@ RectTransform:
   m_Father: {fileID: 300336033}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.4, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -19.7}
+  m_SizeDelta: {x: 0, y: 39.4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1198573413
 MonoBehaviour:
@@ -6606,7 +6631,7 @@ GameObject:
   - component: {fileID: 1270104099}
   - component: {fileID: 1270104098}
   m_Layer: 5
-  m_Name: EnableDeltaTime
+  m_Name: EnableDeltaTimeToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6706,10 +6731,10 @@ RectTransform:
   m_Father: {fileID: 1907883379}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.4, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -19.7}
+  m_SizeDelta: {x: 0, y: 39.4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1281573987
 MonoBehaviour:
@@ -6924,7 +6949,31 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 624792563}
+        m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
+        m_MethodName: StopEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 624792563}
+        m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
+        m_MethodName: EnableFixedDeltaTimeToggle
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1291093688
 GameObject:
@@ -7980,10 +8029,10 @@ RectTransform:
   m_Father: {fileID: 1053562139}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 39.4, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -19.7}
+  m_SizeDelta: {x: 0, y: 39.4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1359149083
 MonoBehaviour:
@@ -9095,8 +9144,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 149, y: 0}
-  m_SizeDelta: {x: 298, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1534733878
 MonoBehaviour:
@@ -10363,7 +10412,7 @@ GameObject:
   - component: {fileID: 1871180517}
   - component: {fileID: 1871180516}
   m_Layer: 5
-  m_Name: EnableFixedDeltaTime
+  m_Name: EnableFixedDeltaTimeToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
