@@ -73,6 +73,7 @@ public class FrameCounterController : MonoBehaviour
             _isEventPaused = false;
         }
 
+        SetTargetFramerate();
         ToggleDeltaTime();
         ToggleFixedDeltaTime();
         ToggleLoop();
@@ -111,13 +112,13 @@ public class FrameCounterController : MonoBehaviour
 
     public void SetTargetFramerate()
     {
-        if(int.Parse(_targetFPSInputField.text) > 60)
+        if(int.Parse(_targetFPSInputField.text) > 120)
         {
             _frameCount = 60;
 
             Application.targetFrameRate = _frameCount;
             _uiViewFrameContainer.UpdateFrameCount(_frameCount);
-            _targetFPSInputField.text = "60";
+            _targetFPSInputField.text = "120";
             return;
         }
 
@@ -157,6 +158,10 @@ public class FrameCounterController : MonoBehaviour
             }
         }
 
+        if (!_isUpdateRunning)
+        {
+            _uiViewFixedFrameContainer.UpdateMissedFrames();
+        }
 
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
@@ -195,28 +200,28 @@ public class FrameCounterController : MonoBehaviour
     private void PushMovingEntityForwardUpdate()
     {
         _car.transform.position += Vector3.right * _moveSpeed; ;
-        _moveSpeedText.text = $"Move speed: {_moveSpeed}/frame";
+        _moveSpeedText.text = $"Move speed: {_moveSpeed} / frame";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardDeltaTime()
     {
         _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
-        _moveSpeedText.text = $"Move speed: {_moveSpeed}/second";
+        _moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardFixedUpdate()
     {
         _car.transform.position += Vector3.right * _moveSpeed;
-        _moveSpeedText.text = $"Move speed: {_moveSpeed}/phyx";
+        _moveSpeedText.text = $"Move speed: {_moveSpeed} / physics tick";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardFixedDeltaTime()
     {
         _car.transform.position += Vector3.right * (_moveSpeed * Time.fixedDeltaTime);
-        _moveSpeedText.text = $"Move speed: {_moveSpeed}/s";
+        _moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
         _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
@@ -252,13 +257,11 @@ public class FrameCounterController : MonoBehaviour
         {
             _loopToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = "Loop: Update";
             _isUpdateRunning = true;
-            StopEvent();
         }
         else
         {
             _loopToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = "Loop: FixedUpdate";
             _isUpdateRunning = false;
-            StopEvent();
         }
     }
 

@@ -8,6 +8,7 @@ public class UIViewFixedFrameContainer : MonoBehaviour
     [SerializeField] private RectTransform _frame = null;
     [SerializeField] private RectTransform _frameContainer = null;
     [SerializeField] private Color _frameColor;
+    [SerializeField] private Color _missedFrameColor;
 
     private Transform[] _frameArray = null;
     private float _frameCount = 0;
@@ -16,6 +17,11 @@ public class UIViewFixedFrameContainer : MonoBehaviour
     private void Awake()
     {
         StartCoroutine(WaitForGUI());
+    }
+
+    public void UpdateMissedFrames()
+    {
+        _frameArray[_frameIndex].GetComponent<Image>().color = _missedFrameColor;
     }
 
     public void UpdateFrames()
