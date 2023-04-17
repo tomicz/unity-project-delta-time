@@ -12,6 +12,8 @@ public class UIViewFrameContainer : MonoBehaviour
     [SerializeField] private Image _lastFrameImage;
     [SerializeField] private Image _currentFrameImage;
     [SerializeField] private Image _deltaTimeImage;
+    [SerializeField] private Color _defaultColor;
+    [SerializeField] private Color _missedFrameColor;
 
     [Header("Properties")]
     [SerializeField] private float _frameHeight = 4;
@@ -38,8 +40,17 @@ public class UIViewFrameContainer : MonoBehaviour
 
         if (_framesIndex >= frameCount - 1)
         {
+            foreach (var frame in _framesArray)
+            {
+                frame.GetComponent<Image>().color = _missedFrameColor;
+            }
             _framesIndex = 0;
         }
+    }
+
+    public void UpdateMissingFrame()
+    {
+        _framesArray[_framesIndex].GetComponent<Image>().color = _defaultColor;
     }
 
     public void ResetIndex()
@@ -68,6 +79,11 @@ public class UIViewFrameContainer : MonoBehaviour
         {
             _framesArray[i].gameObject.SetActive(true);
         }
+    }
+
+    public void CheckOnMissedFrame()
+    {
+
     }
 
     private IEnumerator WaitFrame()

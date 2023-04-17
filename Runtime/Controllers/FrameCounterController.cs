@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using TMPro;
 using TOMICZ.DeltaTimeSimulator.UIViews;
 using UnityEngine;
@@ -158,11 +160,6 @@ public class FrameCounterController : MonoBehaviour
             }
         }
 
-        if (!_isUpdateRunning)
-        {
-            _uiViewFixedFrameContainer.UpdateMissedFrames();
-        }
-
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
 
@@ -184,6 +181,7 @@ public class FrameCounterController : MonoBehaviour
 
         if (!_isUpdateRunning)
         {
+            _uiViewFrameContainer.UpdateMissingFrame();
             if (_isFixedDeltaTimeEnabled)
             {
                 PushMovingEntityForwardFixedDeltaTime();
