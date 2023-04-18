@@ -32,6 +32,7 @@ public class UIViewSimulationContainer : MonoBehaviour
     private bool _hasSimulatorStarted = false;
     private bool _isSimulatorPaused = false;
     private bool _isUpdateRunning = true;
+    private bool _isDeltaTimeEnabled = false;
 
     private Vector3 _startPosition;
     private Vector3 _endPosition;
@@ -41,6 +42,7 @@ public class UIViewSimulationContainer : MonoBehaviour
     private void Awake()
     {
         _loopType.onValueChanged.AddListener(delegate { OnLoopSwitchToggle(_loopType); });
+        _enableDeltaTimeToggle.onValueChanged.AddListener(delegate { OnDeltaTimeEnabled(_enableDeltaTimeToggle); });
     }
 
     private void OnEnable()
@@ -127,6 +129,7 @@ public class UIViewSimulationContainer : MonoBehaviour
         if (toggle.isOn)
         {
             _loopTypeText.text = $"Loop: FixedUpdate";
+            _enableDeltaTimeToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = $"Enable fixed delta time";
             ChangeHeaderColors(_fixedUpdateColor, _textFixedUpdateColor);
             _isUpdateRunning = false;
         }
@@ -134,7 +137,20 @@ public class UIViewSimulationContainer : MonoBehaviour
         {
             _isUpdateRunning = true;
             _loopTypeText.text = $"Loop: Update";
+            _enableDeltaTimeToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = $"Enable delta time";
             ChangeHeaderColors(_updateColor, _textUpdateColor);
+        }
+    }
+
+    private void OnDeltaTimeEnabled(Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            _isDeltaTimeEnabled = true;
+        }
+        else
+        {
+            _isDeltaTimeEnabled = false;
         }
     }
 
@@ -146,7 +162,14 @@ public class UIViewSimulationContainer : MonoBehaviour
         }
         else
         {
-            _vehicle.transform.localPosition += Vector3.right * _vehicleSpeed;
+            if (_isDeltaTimeEnabled)
+            {
+                _vehicle.transform.localPosition += Vector3.right * _vehicleSpeed * Time.deltaTime;
+            }
+            else
+            {
+                _vehicle.transform.localPosition += Vector3.right * _vehicleSpeed;
+            }
         }
     }
 
