@@ -10,6 +10,11 @@ public class MainSimulationController : MonoBehaviour
     private List<UIViewSimulationContainer> _containersList = new List<UIViewSimulationContainer>();
     private int _count = 0;
 
+    private void Start()
+    {
+        Add();
+    }
+
     public void Add()
     {
         if(_containersList.Count == _count)
