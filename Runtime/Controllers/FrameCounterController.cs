@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using TOMICZ.DeltaTimeSimulator.UIViews;
 using UnityEngine;
@@ -7,20 +8,13 @@ public class FrameCounterController : MonoBehaviour
 {
     [Header("Properties")]
     [SerializeField] private int _frameCount = 60;
-    [SerializeField] private float _moveSpeed = 10f;
-    [SerializeField] private float _carOffsetY = 60f;
 
     [Header("Dependencies")]
     [SerializeField] private Image _frame;
     [SerializeField] private Image _lastFrame;
     [SerializeField] private Image _currentFrame;
     [SerializeField] private Image _deltaTime;
-    [SerializeField] private Image _car;
-    [SerializeField] private Toggle _isDeltaTimeEnabledToggle;
-    [SerializeField] private Toggle _isFixedDeltaTimeEnabledToggle;
-    [SerializeField] private Toggle _loopToggle;
     [SerializeField] private TMP_InputField _targetFPSInputField;
-    [SerializeField] private TMP_InputField _speedInputField;
     [SerializeField] private TMP_Text _pauseButtonText;
 
     [Header("Transforms")]
@@ -36,28 +30,37 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private UIViewFrameContainer _uiViewFrameContainer;
     [SerializeField] private UIViewFixedFrameContainer _uiViewFixedFrameContainer;
 
+    [Header("Settings")]
+    [SerializeField] private Toggle _showMissedFramesToggle;
+
     private bool _isEventStarted = false;
-    private bool _isDeltaTimeEnabled = false;
     private bool _isEventPaused = false;
-    private bool _isFixedDeltaTimeEnabled = false;
-    private bool _isUpdateRunning = false;
     private float _timeElapsed = 0;
-    private Vector3 _carStartPosition = Vector3.zero;
+    private bool _isMissedFramesShown = false;
 
     private void Awake()
     {
         _uiViewTimeContainer.OnActionCompleted += OnTimeCycleCompletedEventHandler;
         Application.targetFrameRate = _frameCount;
+
+        _showMissedFramesToggle.onValueChanged.AddListener(delegate { OnFrameMissedToggle(_showMissedFramesToggle); });
+    }
+
+    private void OnFrameMissedToggle(Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            _isMissedFramesShown = true;
+        }
+        else
+        {
+            _isMissedFramesShown = false;
+        }
     }
 
     private void OnTimeCycleCompletedEventHandler()
     {
         _uiViewFrameContainer.ResetIndex();
-    }
-
-    private void OnEnable()
-    {
-        //_carStartPosition = _car.transform.position;
     }
 
     public void StartEvent()
@@ -69,9 +72,6 @@ public class FrameCounterController : MonoBehaviour
         }
 
         SetTargetFramerate();
-        //ToggleDeltaTime();
-        //ToggleFixedDeltaTime();
-        //ToggleLoop();
         ResetStats();
 
         _uiViewFrameContainer.Show();
@@ -123,35 +123,11 @@ public class FrameCounterController : MonoBehaviour
         _uiViewFrameContainer.UpdateFrameCount(_frameCount);
     }
 
-    public void SetSpeed()
-    {
-        _moveSpeed = float.Parse(_speedInputField.text);
-    }
-
-    public void EnableDeltaTime() => _isDeltaTimeEnabled = true;
-
-    public void DisableDeltaTime() => _isDeltaTimeEnabled = false;
-
-    public void EnableDeltaTimeToggle(bool enabled) => _isDeltaTimeEnabledToggle.isOn = enabled;
-
-    public void EnableFixedDeltaTimeToggle(bool enabled) => _isFixedDeltaTimeEnabledToggle.isOn = enabled;
-
     private void Update()
     {
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
-        //if (_isUpdateRunning)
-        //{
-        //    if (_isDeltaTimeEnabled)
-        //    {
-        //        PushMovingEntityForwardDeltaTime();
-        //    }
-        //    else
-        //    {
-        //        PushMovingEntityForwardUpdate();
-        //    }
-        //}
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
 
@@ -168,92 +144,17 @@ public class FrameCounterController : MonoBehaviour
         if (!_isEventStarted) return;
         if (_isEventPaused) return;
 
-        if (!_isUpdateRunning)
+        if (_isMissedFramesShown)
         {
-            //_uiViewFrameContainer.UpdateMissingFrame();
-            //if (_isFixedDeltaTimeEnabled)
-            //{
-            //    PushMovingEntityForwardFixedDeltaTime();
-            //}
-            //else
-            //{
-            //    PushMovingEntityForwardFixedUpdate();
-            //}
+            _uiViewFrameContainer.UpdateMissingFrame(_isMissedFramesShown);
         }
 
         _uiViewFixedFrameContainer.UpdateFrames();
     }
 
-    private void PushMovingEntityForwardUpdate()
-    {
-        _car.transform.position += Vector3.right * _moveSpeed; ;
-        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / frame";
-        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
-    }
-
-    private void PushMovingEntityForwardDeltaTime()
-    {
-        _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
-        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
-        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
-    }
-
-    private void PushMovingEntityForwardFixedUpdate()
-    {
-        _car.transform.position += Vector3.right * _moveSpeed;
-        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / physics tick";
-        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
-    }
-
-    private void PushMovingEntityForwardFixedDeltaTime()
-    {
-        _car.transform.position += Vector3.right * (_moveSpeed * Time.fixedDeltaTime);
-        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
-        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
-    }
-
-    private void ToggleDeltaTime()
-    {
-        if (_isDeltaTimeEnabledToggle.isOn)
-        {
-            _isDeltaTimeEnabled = true;
-        }
-        else
-        {
-            _isDeltaTimeEnabled = false;
-        }
-    }
-
-    private void ToggleFixedDeltaTime()
-    {
-        if (_isFixedDeltaTimeEnabledToggle.isOn)
-        {
-            _isFixedDeltaTimeEnabled = true;
-        }
-        else
-        {
-            _isFixedDeltaTimeEnabled = false;
-        }
-    }
-
-    private void ToggleLoop()
-    {
-        if (!_loopToggle.isOn)
-        {
-            _loopToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = "Loop: Update";
-            _isUpdateRunning = true;
-        }
-        else
-        {
-            _loopToggle.transform.parent.GetComponentInChildren<TMP_Text>().text = "Loop: FixedUpdate";
-            _isUpdateRunning = false;
-        }
-    }
-
     private void ResetStats()
     {
         _timeElapsed = 0;
-        //_car.transform.position = _carStartPosition;
         _uiViewFrameContainer.ResetIndex();
         _uiViewTimeContainer.Reset();
     }

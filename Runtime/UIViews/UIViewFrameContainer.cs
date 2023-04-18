@@ -24,6 +24,7 @@ public class UIViewFrameContainer : MonoBehaviour
 
     private Image[] _framesArray;
     private int _framesIndex = 0;
+    private bool _isMissedFramesEnabled = false;
 
     private void Start()
     {
@@ -43,21 +44,28 @@ public class UIViewFrameContainer : MonoBehaviour
 
         _framesIndex++;
 
-
-
         if (_framesIndex >= frameCount - 1)
         {
-            foreach (var frame in _framesArray)
+            if (_isMissedFramesEnabled)
             {
-                frame.GetComponent<Image>().color = _missedFrameColor;
+                foreach (var frame in _framesArray)
+                {
+                    frame.GetComponent<Image>().color = _defaultColor;
+                }
             }
+
             _framesIndex = 0;
         }
     }
 
-    public void UpdateMissingFrame()
+    public void UpdateMissingFrame(bool isEnabled)
     {
-        _framesArray[_framesIndex].GetComponent<Image>().color = _defaultColor;
+        _isMissedFramesEnabled = isEnabled;
+
+        if (_isMissedFramesEnabled)
+        {
+            _framesArray[_framesIndex].GetComponent<Image>().color = _missedFrameColor;
+        }
     }
 
     public void ResetIndex()
