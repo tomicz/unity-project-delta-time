@@ -14,6 +14,8 @@ public class UIViewFrameContainer : MonoBehaviour
     [SerializeField] private Image _deltaTimeImage;
     [SerializeField] private Color _defaultColor;
     [SerializeField] private Color _missedFrameColor;
+    [SerializeField] private TMP_Text _currentFrameText;
+    [SerializeField] private TMP_Text _lastFrameText;
 
     [Header("Properties")]
     [SerializeField] private float _frameHeight = 4;
@@ -22,6 +24,7 @@ public class UIViewFrameContainer : MonoBehaviour
 
     private Image[] _framesArray;
     private int _framesIndex = 0;
+    private bool _isMissedFramesEnabled = false;
 
     private void Start()
     {
@@ -36,21 +39,33 @@ public class UIViewFrameContainer : MonoBehaviour
         _lastFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex].GetComponent<RectTransform>().rect.height);
         _currentFrameImage.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(_framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.width, _framesArray[_framesIndex + 1].GetComponent<RectTransform>().rect.height);
 
+        _currentFrameText.text = $"Last frame: {_framesIndex + 1}";
+        _lastFrameText.text = $"Current frame: {_framesIndex}";
+
         _framesIndex++;
 
         if (_framesIndex >= frameCount - 1)
         {
-            foreach (var frame in _framesArray)
+            if (_isMissedFramesEnabled)
             {
-                frame.GetComponent<Image>().color = _missedFrameColor;
+                foreach (var frame in _framesArray)
+                {
+                    frame.GetComponent<Image>().color = _defaultColor;
+                }
             }
+
             _framesIndex = 0;
         }
     }
 
-    public void UpdateMissingFrame()
+    public void UpdateMissingFrame(bool isEnabled)
     {
-        _framesArray[_framesIndex].GetComponent<Image>().color = _defaultColor;
+        _isMissedFramesEnabled = isEnabled;
+
+        if (_isMissedFramesEnabled)
+        {
+            _framesArray[_framesIndex].GetComponent<Image>().color = _missedFrameColor;
+        }
     }
 
     public void ResetIndex()

@@ -29,7 +29,7 @@ public class UIViewFixedFrameContainer : MonoBehaviour
         _frameArray[_frameIndex].gameObject.SetActive(true);
         _frameIndex++;
 
-        if (_frameIndex > _frameCount - 1)
+        if (_frameIndex >= _frameCount - 1)
         {
             foreach (var frame in _frameArray)
             {
