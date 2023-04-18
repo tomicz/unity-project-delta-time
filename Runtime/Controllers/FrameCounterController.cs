@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using TMPro;
 using TOMICZ.DeltaTimeSimulator.UIViews;
 using UnityEngine;
@@ -30,11 +28,6 @@ public class FrameCounterController : MonoBehaviour
 
     [Header("Stats UI")]
     [SerializeField] private TMP_Text _fpsStatsText;
-    [SerializeField] private TMP_Text _deltaTimeText;
-    [SerializeField] private TMP_Text _currentFrameText;
-    [SerializeField] private TMP_Text _lastFrameText;
-    [SerializeField] private TMP_Text _moveSpeedText;
-    [SerializeField] private TMP_Text _distanceCrossedText;
     [SerializeField] private TMP_Text _timeElapsedText;
     [SerializeField] private TMP_Text _currentDeltaTimeText;
 
@@ -159,7 +152,6 @@ public class FrameCounterController : MonoBehaviour
         //        PushMovingEntityForwardUpdate();
         //    }
         //}
-
         _uiViewFrameContainer.UpdateFrameIndexes(_frameCount);
         _uiViewTimeContainer.UpdateTime();
 
@@ -168,10 +160,7 @@ public class FrameCounterController : MonoBehaviour
         _timeElapsed += Time.deltaTime;
         _timeElapsedText.text = $"Time elapsed: {_timeElapsed.ToString("F0")}s";
 
-        if (_isDeltaTimeEnabled)
-        {
-            _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
-        }
+        _currentDeltaTimeText.text = $"deltaTime: {Time.deltaTime}";
     }
 
     private void FixedUpdate()
@@ -198,29 +187,29 @@ public class FrameCounterController : MonoBehaviour
     private void PushMovingEntityForwardUpdate()
     {
         _car.transform.position += Vector3.right * _moveSpeed; ;
-        _moveSpeedText.text = $"Move speed: {_moveSpeed} / frame";
-        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / frame";
+        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardDeltaTime()
     {
         _car.transform.position += Vector3.right * (_moveSpeed * Time.deltaTime);
-        _moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
-        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
+        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardFixedUpdate()
     {
         _car.transform.position += Vector3.right * _moveSpeed;
-        _moveSpeedText.text = $"Move speed: {_moveSpeed} / physics tick";
-        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / physics tick";
+        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void PushMovingEntityForwardFixedDeltaTime()
     {
         _car.transform.position += Vector3.right * (_moveSpeed * Time.fixedDeltaTime);
-        _moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
-        _distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
+        //_moveSpeedText.text = $"Move speed: {_moveSpeed} / second";
+        //_distanceCrossedText.text = $"Distance crossed: {(_carStartPosition.x - _car.transform.position.x).ToString("F0").Substring(1)} units";
     }
 
     private void ToggleDeltaTime()
@@ -233,8 +222,6 @@ public class FrameCounterController : MonoBehaviour
         {
             _isDeltaTimeEnabled = false;
         }
-
-        _deltaTimeText.text = $"Delta time enabled: {_isDeltaTimeEnabled}";
     }
 
     private void ToggleFixedDeltaTime()
