@@ -24,7 +24,7 @@ public class MainSimulationController : MonoBehaviour
         {
             UIViewSimulationContainer container = Instantiate(_uiViewSimulationContainerPrefab, _simulationsContainer);
 
-            container.SetSimulationName($"Vehicle id: {_containersList.Count}");
+            container.SetSimulationName($"Player id: {_containersList.Count}");
             container.SetID(_count);
             container.SetDependencies(this);
             _containersList.Add(container);
