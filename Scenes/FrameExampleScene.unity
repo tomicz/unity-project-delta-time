@@ -3161,12 +3161,7 @@ MonoBehaviour:
   _lastFrame: {fileID: 5607501634129106803}
   _currentFrame: {fileID: 866074540}
   _deltaTime: {fileID: 887456788}
-  _car: {fileID: 0}
-  _isDeltaTimeEnabledToggle: {fileID: 0}
-  _isFixedDeltaTimeEnabledToggle: {fileID: 0}
-  _loopToggle: {fileID: 0}
   _targetFPSInputField: {fileID: 1426692737}
-  _speedInputField: {fileID: 0}
   _pauseButtonText: {fileID: 1568808673}
   _frameContainer: {fileID: 366870623}
   _fpsStatsText: {fileID: 225593928}
@@ -9614,8 +9609,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294045932
+  m_fontColor: {r: 0.9254902, g: 0.9411765, b: 0.94509804, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
