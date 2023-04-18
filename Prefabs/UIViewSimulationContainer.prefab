@@ -551,7 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.101960786, g: 0.7372549, b: 0.6117647, a: 1}
+  m_Color: {r: 0.9254902, g: 0.9411765, b: 0.94509804, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -708,19 +708,7 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
-        m_MethodName: SetSpeed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -738,7 +726,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -4552479207811232096}
+        m_TargetAssemblyTypeName: UIViewSimulationContainer, Assembly-CSharp-firstpass
+        m_MethodName: SetSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2519,10 +2519,10 @@ RectTransform:
   m_Father: {fileID: 1461374909}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.0000076293945}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1699241064
 CanvasRenderer:
@@ -2552,7 +2552,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3222,10 +3222,21 @@ MonoBehaviour:
   _enableFixedDeltaTimeToggle: {fileID: 497086290}
   _vehicleSpeedInputField: {fileID: 653667307}
   _loopType: {fileID: 2018525779}
+  _loopTypeText: {fileID: 1787314160}
   _vehicle: {fileID: 523195879}
   _endPositionTransform: {fileID: 2330101367628343262}
   _distanceImage: {fileID: 1511773235523126677}
   _race: {fileID: 1812963449}
+  _defaultColor: {r: 0.9254902, g: 0.9411765, b: 0.94509804, a: 1}
+  _updateColor: {r: 0.75294125, g: 0.22352943, b: 0.17254902, a: 1}
+  _fixedUpdateColor: {r: 0.09019608, g: 0.627451, b: 0.52156866, a: 1}
+  _textUpdateColor: {r: 0.9254902, g: 0.9411765, b: 0.94509804, a: 1}
+  _textFixedUpdateColor: {r: 0.17254902, g: 0.24313726, b: 0.3137255, a: 1}
+  _headerImageButtons:
+  - {fileID: 1270104098}
+  - {fileID: 1871180516}
+  - {fileID: 1347163838}
+  - {fileID: 1292168624}
 --- !u!1 &1688290526323855085
 GameObject:
   m_ObjectHideFlags: 0

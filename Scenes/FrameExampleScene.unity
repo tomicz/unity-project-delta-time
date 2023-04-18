@@ -563,7 +563,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -463.86362}
+  m_AnchoredPosition: {x: 24.333334, y: -444}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &177889486
@@ -842,6 +842,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 624792563}
         m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
+        m_MethodName: Pause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1202871797}
+        m_TargetAssemblyTypeName: MainSimulationController, Assembly-CSharp-firstpass
         m_MethodName: Pause
         m_Mode: 1
         m_Arguments:
@@ -1292,6 +1304,18 @@ MonoBehaviour:
       - m_Target: {fileID: 624792563}
         m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
         m_MethodName: StopEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1202871797}
+        m_TargetAssemblyTypeName: MainSimulationController, Assembly-CSharp-firstpass
+        m_MethodName: Stop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2307,7 +2331,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -512.9545}
+  m_AnchoredPosition: {x: 24.333334, y: -491}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &453069265
@@ -2442,7 +2466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -120.22727}
+  m_AnchoredPosition: {x: 24.333334, y: -115}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &462462307
@@ -3150,6 +3174,18 @@ MonoBehaviour:
       - m_Target: {fileID: 624792563}
         m_TargetAssemblyTypeName: FrameCounterController, Assembly-CSharp-firstpass
         m_MethodName: StartEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1202871797}
+        m_TargetAssemblyTypeName: MainSimulationController, Assembly-CSharp-firstpass
+        m_MethodName: Run
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5284,7 +5320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -316.59088}
+  m_AnchoredPosition: {x: 24.333334, y: -303}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1119937451
@@ -5419,7 +5455,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -267.5}
+  m_AnchoredPosition: {x: 24.333334, y: -256}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1141448401
@@ -5619,7 +5655,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -22.045454}
+  m_AnchoredPosition: {x: 24.333334, y: -21}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1181389022
@@ -5906,6 +5942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uiViewSimulationContainerPrefab: {fileID: -4552479207811232096, guid: 8de610235f0c74d6493d6950c90c5afb, type: 3}
   _simulationsContainer: {fileID: 1293568000}
+  _pauseButtonText: {fileID: 1568808673}
 --- !u!4 &1202871798
 Transform:
   m_ObjectHideFlags: 0
@@ -5956,7 +5993,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -71.13636}
+  m_AnchoredPosition: {x: 24.333334, y: -68}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1243828740
@@ -7122,7 +7159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -365.6818}
+  m_AnchoredPosition: {x: 24.333334, y: -350}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1335233733
@@ -9565,7 +9602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -169.31818}
+  m_AnchoredPosition: {x: 24.333334, y: -162}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1901607206
@@ -10110,7 +10147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -414.7727}
+  m_AnchoredPosition: {x: 24.333334, y: -397}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2038309121
@@ -10380,7 +10417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24.333334, y: -218.40909}
+  m_AnchoredPosition: {x: 24.333334, y: -209}
   m_SizeDelta: {x: 48.666668, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2112031252
