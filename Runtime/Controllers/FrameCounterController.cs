@@ -24,6 +24,8 @@ public class FrameCounterController : MonoBehaviour
     [SerializeField] private TMP_Text _fpsStatsText;
     [SerializeField] private TMP_Text _timeElapsedText;
     [SerializeField] private TMP_Text _currentDeltaTimeText;
+    [SerializeField] private TMP_Text _fixedDeltaTimeText;
+    [SerializeField] private TMP_Text _timeScaleText;
 
     [Header("UIView Dependencies")]
     [SerializeField] private UIViewTimeContainer _uiViewTimeContainer;
@@ -125,9 +127,17 @@ public class FrameCounterController : MonoBehaviour
         _uiViewFrameContainer.UpdateFrameCount(_frameCount);
     }
 
-    public void SetFixedTimestep() => Time.fixedDeltaTime = float.Parse(_setFixedTimestepInputField.text);
+    public void SetFixedTimestep()
+    {
+        Time.fixedDeltaTime = float.Parse(_setFixedTimestepInputField.text);
+        _fixedDeltaTimeText.text = $"Fixed delta time: {Time.fixedDeltaTime}";
+    }
 
-    public void SetTimeScale() => Time.timeScale = float.Parse(_setTimeScaleInputField.text);
+    public void SetTimeScale()
+    {
+        Time.timeScale = float.Parse(_setTimeScaleInputField.text);
+        _timeScaleText.text = $"Time scale: {Time.timeScale}";
+    }
 
     private void Update()
     {
