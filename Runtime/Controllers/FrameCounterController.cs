@@ -33,6 +33,7 @@ public class FrameCounterController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private Toggle _showMissedFramesToggle;
     [SerializeField] private TMP_InputField _setFixedTimestepInputField;
+    [SerializeField] private TMP_InputField _setTimeScaleInputField;
 
     private bool _isEventStarted = false;
     private bool _isEventPaused = false;
@@ -125,6 +126,8 @@ public class FrameCounterController : MonoBehaviour
     }
 
     public void SetFixedTimestep() => Time.fixedDeltaTime = float.Parse(_setFixedTimestepInputField.text);
+
+    public void SetTimeScale() => Time.timeScale = float.Parse(_setTimeScaleInputField.text);
 
     private void Update()
     {
